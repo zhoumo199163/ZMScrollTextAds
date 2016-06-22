@@ -8,12 +8,14 @@
 
 #import "ZMScrollTextAdsView.h"
 
+
 @interface ZMScrollTextAdsView()<UIScrollViewDelegate>{
     CGFloat selfHeight;
     CGFloat selfWidth;
     
-    CGFloat scrollTime;
+    CGFloat scrollTime;//scroll滚动间隔
     NSInteger currentNum;//记录当前显示的是哪条text
+    CGFloat labelPauseTime;//label停顿展示时间
 }
 
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -27,12 +29,13 @@
 
 @implementation ZMScrollTextAdsView
 
-- (instancetype)initScrollTextAdsFrame:(CGRect)frame labelTextArray:(NSArray *)array scrollTimeInterval:(CGFloat)time{
+- (instancetype)initScrollTextAdsFrame:(CGRect)frame labelTextArray:(NSArray *)array scrollTimeInterval:(CGFloat)time pauseTime:(CGFloat)pauseTime{
     self = [super initWithFrame:frame];
     if(self){
         if(array.count != 0){
             self.labelTextArray = [NSArray arrayWithArray:array];
             scrollTime = time;
+            labelPauseTime = pauseTime<scrollTime?pauseTime:scrollTime/2;
             selfHeight = self.frame.size.height;
             selfWidth = self.frame.size.width;
             
@@ -62,8 +65,12 @@
     self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, selfWidth, selfHeight)];
     self.topLabel.text = [array firstObject];
     self.topLabel.backgroundColor = [UIColor purpleColor];
+    self.topLabel.userInteractionEnabled = YES;
     [self.scrollView addSubview:self.topLabel];
     currentNum = 0;
+    UITapGestureRecognizer *tapGesureTecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self.topLabel addGestureRecognizer:tapGesureTecognizer];
+    
     
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, selfHeight, selfWidth, selfHeight)];
     self.bottomLabel.text = [array objectAtIndex:1];
@@ -83,7 +90,7 @@
 
 - (void)scrollToNextLabel{
 
-    [UIView animateWithDuration:scrollTime/2 animations:^{
+    [UIView animateWithDuration:scrollTime-labelPauseTime animations:^{
         [self.scrollView setContentOffset:CGPointMake(0, selfHeight)];
         
     } completion:^(BOOL finished) {
@@ -107,11 +114,16 @@
         nextNum = (num+1)== self.labelTextArray.count?0:num+1;
     }
     
-    NSLog(@"num:%ld",(long)num);
     [self.topLabel setText:self.labelTextArray[num]];
     [self.bottomLabel setText:self.labelTextArray[nextNum]];
     
     currentNum = num;
+}
+
+- (void)handleTap:(UITapGestureRecognizer *)tap{
+    if(self.ZMDelegate && [self.ZMDelegate respondsToSelector:@selector(clickedLabelWithNum:)]){
+        [self.ZMDelegate clickedLabelWithNum:currentNum+1];
+    }
 }
 
 

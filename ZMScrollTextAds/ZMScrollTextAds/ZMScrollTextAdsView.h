@@ -8,8 +8,31 @@
 
 #import <UIKit/UIKit.h>
 
+@class ZMScrollTextAdsView;
+@protocol ZMScrollTextAdsViewDelegate <NSObject>
+
+// 点击label代理
+- (void)clickedLabelWithNum:(NSInteger)num;
+
+@end
+
 @interface ZMScrollTextAdsView : UIView
 
-- (instancetype)initScrollTextAdsFrame:(CGRect)frame labelTextArray:(NSArray *)array scrollTimeInterval:(CGFloat)time;
+@property (nonatomic ,assign) id<ZMScrollTextAdsViewDelegate> ZMDelegate;
+
+/**
+ *  初始化
+ *
+ *  @param frame
+ *  @param array
+ *  @param time      滚动间隔时间
+ *  @param pauseTime label停顿时间 注：滚动间隔时间 - 停顿时间 = label滚动动画时间
+ *
+ *  @return
+ */
+- (instancetype)initScrollTextAdsFrame:(CGRect)frame
+                        labelTextArray:(NSArray *)array
+                    scrollTimeInterval:(CGFloat)time
+                             pauseTime:(CGFloat)pauseTime;
 
 @end
