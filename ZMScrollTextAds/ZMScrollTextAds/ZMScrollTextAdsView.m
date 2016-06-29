@@ -51,7 +51,6 @@
 //初始化ScrollView
 - (void)initScrollView{
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, selfWidth,selfHeight)];
-    self.scrollView.backgroundColor = [UIColor orangeColor];
     self.scrollView.showsHorizontalScrollIndicator = NO;
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.delegate = self;
@@ -64,8 +63,8 @@
 - (void)initScrollWithLabels:(NSArray *)array{
     self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, selfWidth, selfHeight)];
     self.topLabel.text = [array firstObject];
-    self.topLabel.backgroundColor = [UIColor purpleColor];
     self.topLabel.userInteractionEnabled = YES;
+    [self.topLabel setBackgroundColor:[UIColor whiteColor]];
     [self.scrollView addSubview:self.topLabel];
     currentNum = 0;
     UITapGestureRecognizer *tapGesureTecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
@@ -74,7 +73,7 @@
     
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, selfHeight, selfWidth, selfHeight)];
     self.bottomLabel.text = [array objectAtIndex:1];
-    self.bottomLabel.backgroundColor = [UIColor purpleColor];
+    [self.bottomLabel setBackgroundColor:[UIColor whiteColor]];
     [self.scrollView addSubview:self.bottomLabel];
 }
 
