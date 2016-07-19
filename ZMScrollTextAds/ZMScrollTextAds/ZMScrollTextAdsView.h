@@ -20,6 +20,8 @@
 
 @property (nonatomic ,assign) id<ZMScrollTextAdsViewDelegate> ZMDelegate;
 
+@property (nonatomic) BOOL openUserInteractionEnabled;
+
 /**
  *  初始化
  *
