@@ -54,7 +54,7 @@
     self.scrollView.showsHorizontalScrollIndicator = NO;
     self.scrollView.showsVerticalScrollIndicator = NO;
     self.scrollView.delegate = self;
-    [self.scrollView setBackgroundColor:[UIColor redColor]];
+    [self.scrollView setBackgroundColor:[UIColor whiteColor]];
     self.scrollView.userInteractionEnabled = self.openUserInteractionEnabled;
     [self.scrollView setContentSize:CGSizeMake(0 ,self.labelTextArray.count ==1?selfHeight:2*selfHeight)];
     [self.scrollView setContentOffset:CGPointMake(0, 0) animated:NO];
