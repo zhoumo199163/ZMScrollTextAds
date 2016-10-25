@@ -7,16 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		982A233D1DBDE7C500B3BB5A /* ZMTransformAdsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 982A233C1DBDE7C500B3BB5A /* ZMTransformAdsView.m */; };
 		98A3CD851D0E7BC4003BBD7C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A3CD841D0E7BC4003BBD7C /* main.m */; };
 		98A3CD881D0E7BC4003BBD7C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A3CD871D0E7BC4003BBD7C /* AppDelegate.m */; };
 		98A3CD8B1D0E7BC4003BBD7C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A3CD8A1D0E7BC4003BBD7C /* ViewController.m */; };
 		98A3CD8E1D0E7BC4003BBD7C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A3CD8C1D0E7BC4003BBD7C /* Main.storyboard */; };
 		98A3CD901D0E7BC4003BBD7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 98A3CD8F1D0E7BC4003BBD7C /* Assets.xcassets */; };
 		98A3CD931D0E7BC4003BBD7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 98A3CD911D0E7BC4003BBD7C /* LaunchScreen.storyboard */; };
-		98A3CD9D1D0E7BEB003BBD7C /* ZMScrollTextAdsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A3CD9C1D0E7BEB003BBD7C /* ZMScrollTextAdsView.m */; settings = {ASSET_TAGS = (); }; };
+		98A3CD9D1D0E7BEB003BBD7C /* ZMScrollTextAdsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 98A3CD9C1D0E7BEB003BBD7C /* ZMScrollTextAdsView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		982A233B1DBDE7C500B3BB5A /* ZMTransformAdsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZMTransformAdsView.h; sourceTree = "<group>"; };
+		982A233C1DBDE7C500B3BB5A /* ZMTransformAdsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZMTransformAdsView.m; sourceTree = "<group>"; };
 		98A3CD801D0E7BC4003BBD7C /* ZMScrollTextAds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZMScrollTextAds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A3CD841D0E7BC4003BBD7C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		98A3CD861D0E7BC4003BBD7C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -88,6 +91,8 @@
 			children = (
 				98A3CD9B1D0E7BEB003BBD7C /* ZMScrollTextAdsView.h */,
 				98A3CD9C1D0E7BEB003BBD7C /* ZMScrollTextAdsView.m */,
+				982A233B1DBDE7C500B3BB5A /* ZMTransformAdsView.h */,
+				982A233C1DBDE7C500B3BB5A /* ZMTransformAdsView.m */,
 			);
 			path = ZMScrollTextAds;
 			sourceTree = "<group>";
@@ -163,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				98A3CD8B1D0E7BC4003BBD7C /* ViewController.m in Sources */,
+				982A233D1DBDE7C500B3BB5A /* ZMTransformAdsView.m in Sources */,
 				98A3CD881D0E7BC4003BBD7C /* AppDelegate.m in Sources */,
 				98A3CD9D1D0E7BEB003BBD7C /* ZMScrollTextAdsView.m in Sources */,
 				98A3CD851D0E7BC4003BBD7C /* main.m in Sources */,
@@ -312,6 +318,7 @@
 				98A3CD991D0E7BC4003BBD7C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

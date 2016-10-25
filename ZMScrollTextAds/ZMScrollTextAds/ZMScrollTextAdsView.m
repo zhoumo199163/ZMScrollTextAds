@@ -8,6 +8,10 @@
 
 #import "ZMScrollTextAdsView.h"
 
+// 滚动间隔时间 - 停顿时间 = label滚动动画时间
+static const CGFloat SCROLL_TIME = 1.5f;
+static const CGFloat PAUSE_TIME = 0.5f;
+
 
 @interface ZMScrollTextAdsView()<UIScrollViewDelegate>{
     CGFloat selfHeight;
@@ -29,22 +33,24 @@
 
 @implementation ZMScrollTextAdsView
 
-- (instancetype)initScrollTextAdsFrame:(CGRect)frame labelTextArray:(NSArray *)array scrollTimeInterval:(CGFloat)time pauseTime:(CGFloat)pauseTime{
+- (instancetype)initScrollTextAdsFrame:(CGRect)frame labelTextArray:(NSArray *)array{
     self = [super initWithFrame:frame];
     if(self){
         if(array.count != 0){
             self.labelTextArray = [NSArray arrayWithArray:array];
-            scrollTime = time;
-            labelPauseTime = pauseTime<scrollTime?pauseTime:scrollTime/2;
+            scrollTime = SCROLL_TIME;
+            labelPauseTime = PAUSE_TIME;
             selfHeight = self.frame.size.height;
             selfWidth = self.frame.size.width;
-            
-            [self initScrollView];
-            [self initScrollWithLabels:self.labelTextArray];
-            [self startTime];
         }
     }
     return self;
+}
+
+- (void)drawRect:(CGRect)rect{
+    [self initScrollView];
+    [self initScrollWithLabels:self.labelTextArray];
+    [self startTime];
 }
 
 
@@ -65,6 +71,7 @@
 - (void)initScrollWithLabels:(NSArray *)array{
     self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, selfWidth, selfHeight)];
     self.topLabel.text = [array firstObject];
+    self.topLabel.textAlignment = NSTextAlignmentCenter;
     self.topLabel.userInteractionEnabled = YES;
     [self.topLabel setBackgroundColor:[UIColor whiteColor]];
     
@@ -77,6 +84,7 @@
     
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, selfHeight, selfWidth, selfHeight)];
     self.bottomLabel.text = [array objectAtIndex:1];
+    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
     [self.bottomLabel setBackgroundColor:[UIColor whiteColor]];
     [self.scrollView addSubview:self.bottomLabel];
 }

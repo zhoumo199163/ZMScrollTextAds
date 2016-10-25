@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "ZMScrollTextAdsView.h"
+#import "ZMTransformAdsView.h"
 
 @interface ViewController ()<ZMScrollTextAdsViewDelegate>
 
@@ -21,10 +22,15 @@
     
     self.view.backgroundColor = [UIColor grayColor];
     
-    NSArray *array = [NSArray arrayWithObjects:@"第一条巴拉巴拉",@"第二条哈哈哈哈", @"第三条哇哇哇哇",@"第四条啦啦啦啦啦啦",nil];
-    ZMScrollTextAdsView *view = [[ZMScrollTextAdsView alloc] initScrollTextAdsFrame:CGRectMake(0, 100, self.view.frame.size.width, 50) labelTextArray:array scrollTimeInterval:2.0f pauseTime:1.5f];
-    view.ZMDelegate = self;
-    [self.view addSubview:view];
+    NSArray *array = [NSArray arrayWithObjects:@"Spring",@"Summer", @"Autumn",@"Winter",nil];
+    ZMScrollTextAdsView *textAdsView = [[ZMScrollTextAdsView alloc] initScrollTextAdsFrame:CGRectMake(0, 100, self.view.frame.size.width, 50) labelTextArray:array];
+    textAdsView.ZMDelegate = self;
+    [self.view addSubview:textAdsView];
+    
+    ZMTransformAdsView *transformView =[[ZMTransformAdsView alloc] initZMTransformAdsWithFrame:CGRectMake(0, 300, self.view.frame.size.width, 50) titles:array];
+    
+    transformView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:transformView];
 }
 
 - (void)didReceiveMemoryWarning {
