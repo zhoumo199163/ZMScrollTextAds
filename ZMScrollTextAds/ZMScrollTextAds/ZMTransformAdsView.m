@@ -55,7 +55,8 @@
                                                  // 缩放变换
                                                  CGAffineTransformMakeScale(1, 0),  // frame = (0 25; 414 0)
                                                  // 偏移变换
-                                                 CGAffineTransformMakeTranslation(0, -offset) // frame = (0 0; 414 0)
+                                                 CGAffineTransformMakeTranslation(0, offset)
+//                                                 CGAffineTransformMakeTranslation(0, -offset)// 向下 frame = (0 0; 414 0)
                                                  );
     
     timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(transformAnimation) userInfo:nil repeats:YES];
@@ -77,13 +78,14 @@
         label1.transform = CGAffineTransformIdentity;
         label2.transform = CGAffineTransformConcat(
                                                      CGAffineTransformMakeScale(1, 0.05),
-                                                     CGAffineTransformMakeTranslation(0, offset)
+                                                     CGAffineTransformMakeTranslation(0, -offset)
+//                                                   CGAffineTransformMakeTranslation(0, offset)
                                                      );
-        // frame = (0 48.75; 414 2.5)
     } completion:^(BOOL finished) {
         label2.transform = CGAffineTransformConcat(
                                                    CGAffineTransformMakeScale(1, 0),
-                                                   CGAffineTransformMakeTranslation(0, -offset)
+                                                   CGAffineTransformMakeTranslation(0, offset)
+//                                                   CGAffineTransformMakeTranslation(0, -offset)
                                                    );
         [labels removeAllObjects];
         [labels addObject:label2];
