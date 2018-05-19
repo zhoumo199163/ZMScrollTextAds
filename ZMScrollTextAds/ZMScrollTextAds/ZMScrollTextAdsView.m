@@ -8,138 +8,143 @@
 
 #import "ZMScrollTextAdsView.h"
 
-// 滚动间隔时间 - 停顿时间 = label滚动动画时间
-static const CGFloat SCROLL_TIME = 1.5f;
-static const CGFloat PAUSE_TIME = 0.5f;
+// 文字滚动时间
+static const CGFloat SCROLL_TIME = 1.0f;
+// 文字展示时间
+static const CGFloat SHOW_TIME = 3.0f;
 
 
 @interface ZMScrollTextAdsView()<UIScrollViewDelegate>{
     CGFloat selfHeight;
     CGFloat selfWidth;
     
-    CGFloat scrollTime;//scroll滚动间隔
     NSInteger currentNum;//记录当前显示的是哪条text
-    CGFloat labelPauseTime;//label停顿展示时间
+    BOOL isNeedScrolling;
 }
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UILabel *topLabel;
 @property (nonatomic, strong) UILabel *bottomLabel;
 
-@property (nonatomic, strong) NSArray *labelTextArray;
+@property (nonatomic, strong) NSArray *dataSources;
 @property (nonatomic, strong) NSTimer *timer;
 
 @end
 
 @implementation ZMScrollTextAdsView
 
-- (instancetype)initScrollTextAdsFrame:(CGRect)frame labelTextArray:(NSArray *)array{
+- (instancetype)initWithFrame:(CGRect)frame dataSources:(NSArray *)array{
     self = [super initWithFrame:frame];
     if(self){
         if(array.count != 0){
-            self.labelTextArray = [NSArray arrayWithArray:array];
-            scrollTime = SCROLL_TIME;
-            labelPauseTime = PAUSE_TIME;
+            self.dataSources = [NSArray arrayWithArray:array];
+            if(array.count >1){
+                isNeedScrolling = YES;
+            }
             selfHeight = self.frame.size.height;
             selfWidth = self.frame.size.width;
+            [self.scrollView addSubview:self.topLabel];
+            [self.scrollView addSubview:self.bottomLabel];
+            [self addSubview:self.scrollView];
+            [self startTime];
         }
     }
     return self;
 }
 
-- (void)drawRect:(CGRect)rect{
-    [self initScrollView];
-    [self initScrollWithLabels:self.labelTextArray];
-    [self startTime];
-}
-
-
-//初始化ScrollView
-- (void)initScrollView{
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, selfWidth,selfHeight)];
-    self.scrollView.showsHorizontalScrollIndicator = NO;
-    self.scrollView.showsVerticalScrollIndicator = NO;
-    self.scrollView.delegate = self;
-    [self.scrollView setBackgroundColor:[UIColor whiteColor]];
-    self.scrollView.scrollEnabled = NO;
-    [self.scrollView setContentSize:CGSizeMake(0 ,self.labelTextArray.count ==1?selfHeight:2*selfHeight)];
-    [self.scrollView setContentOffset:CGPointMake(0, 0) animated:NO];
-    [self addSubview:self.scrollView];
-    
-}
-
-- (void)initScrollWithLabels:(NSArray *)array{
-    self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, selfWidth, selfHeight)];
-    self.topLabel.text = [array firstObject];
-    self.topLabel.textAlignment = NSTextAlignmentCenter;
-    self.topLabel.userInteractionEnabled = YES;
-    [self.topLabel setBackgroundColor:[UIColor whiteColor]];
-    
-    currentNum = 0;
-    UITapGestureRecognizer *tapGesureTecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-    [self.topLabel addGestureRecognizer:tapGesureTecognizer];
-    
-    [self.scrollView addSubview:self.topLabel];
-    
-    
-    self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, selfHeight, selfWidth, selfHeight)];
-    self.bottomLabel.text = [array objectAtIndex:1];
-    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
-    [self.bottomLabel setBackgroundColor:[UIColor whiteColor]];
-    [self.scrollView addSubview:self.bottomLabel];
-}
 
 //开启计时
 - (void)startTime{
-    
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:scrollTime target:self selector:@selector(scrollToNextLabel) userInfo:nil repeats:YES];
-    
+    self.topLabel.text = [self.dataSources firstObject];
+    if(!isNeedScrolling) return;
+    self.bottomLabel.text = [self.dataSources objectAtIndex:1];
+    if([self.timer isValid]){
+        [self endTime];
+    }
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:SHOW_TIME target:self selector:@selector(scrollToNextLabel) userInfo:nil repeats:YES];
     NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
     [runLoop addTimer:self.timer forMode:NSRunLoopCommonModes];
-    
 }
 
 - (void)endTime{
     [self.timer invalidate];
     self.timer = nil;
+    currentNum = 0;
 }
 
 - (void)scrollToNextLabel{
-
-    [UIView animateWithDuration:(scrollTime-labelPauseTime) animations:^{
+    [UIView animateWithDuration:SCROLL_TIME animations:^{
         [self.scrollView setContentOffset:CGPointMake(0, selfHeight)];
-        
     } completion:^(BOOL finished) {
         [self.scrollView setContentOffset:CGPointMake(0, 0)];
          [self reloadLabelText:currentNum];
-       
+        [self.timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:SHOW_TIME]];
     }];
     
 }
 
 - (void)reloadLabelText:(NSInteger)num{
-    
     NSInteger nextNum;
     
-    if(num == [self.labelTextArray count] -1){
+    if(num == [self.dataSources count] -1){
         num = 0;
         nextNum = num + 1;
     }
     else{
         num = num  +1;
-        nextNum = (num+1)== self.labelTextArray.count?0:num+1;
+        nextNum = (num+1)== self.dataSources.count?0:num+1;
     }
     
-    [self.topLabel setText:self.labelTextArray[num]];
-    [self.bottomLabel setText:self.labelTextArray[nextNum]];
+    [self.topLabel setText:self.dataSources[num]];
+    [self.bottomLabel setText:self.dataSources[nextNum]];
     
     currentNum = num;
 }
 
-- (void)handleTap:(UITapGestureRecognizer *)tap{
-    if(self.ZMDelegate && [self.ZMDelegate respondsToSelector:@selector(clickedLabelWithNum:)]){
-        [self.ZMDelegate clickedLabelWithNum:currentNum+1];
+- (void)tapGestureHandler:(UITapGestureRecognizer *)tap{
+    if(self.ZMDelegate && [self.ZMDelegate respondsToSelector:@selector(didSelectedLableAtIndex:)]){
+        [self.ZMDelegate didSelectedLableAtIndex:currentNum+1];
     }
+}
+
+#pragma mark - GET
+- (UIScrollView *)scrollView{
+    if(!_scrollView){
+        UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, selfWidth,selfHeight)];
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.showsVerticalScrollIndicator = NO;
+        scrollView.delegate = self;
+        [scrollView setBackgroundColor:[UIColor whiteColor]];
+        scrollView.scrollEnabled = NO;
+        [scrollView setContentSize:CGSizeMake(0 ,self.dataSources.count ==1?selfHeight:2*selfHeight)];
+        [scrollView setContentOffset:CGPointMake(0, 0) animated:NO];
+        _scrollView = scrollView;
+    }
+    return _scrollView;
+}
+
+- (UILabel *)topLabel{
+    if(!_topLabel){
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, selfWidth, selfHeight)];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.userInteractionEnabled = YES;
+        [label setBackgroundColor:[UIColor whiteColor]];
+        UITapGestureRecognizer *tapGesureTecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler:)];
+        [label addGestureRecognizer:tapGesureTecognizer];
+        _topLabel = label;
+    }
+    return _topLabel;
+}
+
+- (UILabel *)bottomLabel{
+    if(!_bottomLabel){
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, selfHeight, selfWidth, selfHeight)];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.userInteractionEnabled = YES;
+        [label setBackgroundColor:[UIColor whiteColor]];
+        _bottomLabel = label;
+    }
+    return _bottomLabel;
 }
 
 

@@ -10,6 +10,7 @@
 
 @interface ZMTransformAdsView : UIView
 
-- (instancetype)initZMTransformAdsWithFrame:(CGRect)frame titles:(NSArray *)titles;
-
+- (instancetype)initWithFrame:(CGRect)frame dataSources:(NSArray *)array;
+- (void)startTime;
+- (void)endTime;
 @end

@@ -8,12 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-
 @class ZMScrollTextAdsView;
 @protocol ZMScrollTextAdsViewDelegate <NSObject>
 
-// 点击label代理
-- (void)clickedLabelWithNum:(NSInteger)num;
+- (void)didSelectedLableAtIndex:(NSInteger)index;
 
 @end
 
@@ -21,15 +19,14 @@
 
 @property (nonatomic ,assign) id<ZMScrollTextAdsViewDelegate> ZMDelegate;
 
+- (instancetype)initWithFrame:(CGRect)frame dataSources:(NSArray *)array;
 /**
- *  初始化
- *
- *  @param frame
- *  @param array
- *
- *  @return
+ 开启计时 - 重新滚动
  */
-- (instancetype)initScrollTextAdsFrame:(CGRect)frame
-                        labelTextArray:(NSArray *)array;
+- (void)startTime;
+/**
+ 结束计时 - 清理数据
+ */
+- (void)endTime;
 
 @end
